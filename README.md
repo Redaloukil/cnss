@@ -21,8 +21,22 @@
 
 1. [Introduction](#1-introduction)
 2. [Project Objectives](#2-project-objectives)
-3. [Project Relevance and Learning Outcomes](#3-project-relevance-and-learning-outcomes)
-4. [Future Goal (Core WAF Engine)](#4-future-goal-core-waf-engine)
+3. [Project Phases](#3-project-phases)
+
+   3.1. [Phase 0: Foundational Components](#31-phase-0-foundational-components)
+
+   3.2. [Phase 1: WAF Reverse Proxy](#32-phase-1-waf-reverse-proxy)
+
+   3.3. [Phase 2: Security Mechanisms](#33-phase-2-security-mechanisms)
+
+   3.4. [Phase 3: Testing and Monitoring](#34-phase-3-testing-and-monitoring)
+
+   3.5. [Phase 4: Advanced Network Tooling](#35-phase-4-advanced-network-tooling)
+
+   3.6. [Phase 5: Optional Features](#36-phase-5-optional-features)
+
+4. [Project Relevance and Learning Outcomes](#4-project-relevance-and-learning-outcomes)
+5. [Future Goal (Core WAF Engine)](#5-future-goal-core-waf-engine)
 
 ## 1. Introduction
 
@@ -30,16 +44,13 @@ This project aims to develop a hybrid `Network Intrusion Detection System` (NIDS
 
 ## 2. Project Objectives
 
-Due to the complexity and technical learning curve, the project is split into 5 phases:
+Given the complexity and technical learning curve, the project is divided into five phases, each targeting specific components and functionalities of the network security suite. The core project spans Phases 1 through 3, while Phase 4 involves dependency tooling that will be addressed as needed. The final phase, Phase 5, is optional and will be undertaken if time permits.
 
-- [Phase 0: Foundational Components](#phase-0-foundational-components)
-- [Phase 1: WAF Reverse Proxy](#phase-1-waf-reverse-proxy)
-- [Phase 2: Security Mechanisms](#phase-2-security-mechanisms)
-- [Phase 3: Testing and Monitoring](#phase-3-testing-and-monitoring)
-- [Phase 4: Advanced Network Tooling](#phase-4-advanced-network-tooling)
-- [Phase 5: Optional Features](#phase-5-optional-features)
+## 3. Project Phases
 
-## Phase 0: Foundational Components
+> Breakdown of the Project with Estimated Timeline for all Moving Components
+
+### 3.1 Phase 0: Foundational Components
 
 >Target Objectives: Set up development environment
 
@@ -50,11 +61,11 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - `attacker`: Simulate attacks like DDoS, packet flooding
 - `waf-deploy`: Docker container for main project
 
-## Phase 1: WAF Reverse Proxy
+### 3.2 Phase 1: WAF Reverse Proxy
 
 >Target Objectives: Implement the core reverse proxy functionality and request parsing. (2-3 months)
 
-### 1.1 HTTP Proxy (Reverse Proxy)
+#### 3.2.1 HTTP Proxy (Reverse Proxy)
 
 - Implement using Go's `net/http` package
 - Intercept incoming HTTP/HTTPS requests
@@ -62,38 +73,38 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Handle TLS/SSL using `crypto/tls` package
 - Use `gorilla/mux` for routing, `martini` for middleware
 
-### 1.2 Request Parser
+#### 3.2.2 Request Parser
 
 - Parse HTTP headers, body, and URL parameters
 - Handle different content types (e.g., JSON, XML, form-data)
 - Decode encoded content (e.g., base64, URL encoding)
 - Work with Go libraries: `json`, `xml`, `url`, `mime/multipart`
 
-### 1.3 Logging and Alerting System
+#### 3.2.3 Logging and Alerting System
 
 - Log all requests and their outcomes
 - Implement real-time threat alerting
 - Use `logrus` for structured logging, `gopkg.in/gomail.v2` for email alerts
 
-## Phase 2: Security Mechanisms
+### 3.3 Phase 2: Security Mechanisms
 
 >Target Objectives: Implement the core security features, including rate limiting and IP reputation management. (2-3 months)
 
-### 2.1 Rate Limiter
+#### 3.3.1 Rate Limiter
 
 - Track request rates per IP, user, or endpoint
 - Understand `token bucket` or `sliding window` algorithms
 - Set configurable rate limits and time windows
 - Learn to use `juju/ratelimit`, `golang.org/x/time/rate`
 
-### 2.2 IP Reputation Manager
+#### 3.3.2 IP Reputation Manager
 
 - Maintain a local database of IP reputations
 - Implement IP blocking and unblocking mechanisms
 - Implement Whitelist/Blacklist pools
 - Learn `boltdb` for lightweight database, `bloom` for IP reputation filtering
 
-### 2.3 Rule Engine
+#### 3.3.3 Rule Engine
 
 - Define a rule structure (e.g., conditions, actions)
 - Implement rule matching logic
@@ -101,18 +112,18 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Implement signature-based threat detection (e.g., Nimda worm)
 - Use regular expressions with `regexp`, `antchfx/xmlquery` for XML rule processing
 
-## Phase 3: Testing and Monitoring
+### 3.4 Phase 3: Testing and Monitoring
 
 >Target Objectives: Implement the testing suite and monitoring/dashboard components. (2-3 months)
 
-### 3.1 Testing Suite
+#### 3.4.1 Testing Suite
 
 - Implement traffic simulation for controlled testing
 - Create various attack scenario simulations
 - Develop stress testing tools (e.g., packet flooding)
 - Consider manual implementation or use `fortio` for load testing, `gobench` for benchmarking
 
-### 3.2 Logging and Alerting System
+#### 3.4.2 Logging and Alerting System
 
 - Log all requests and their outcomes
 - Implement real-time event-based alerting
@@ -120,21 +131,21 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Define alert conditions (e.g., high block rate, unusual traffic patterns)
 - Support alert channels like email
 
-## Phase 4: Advanced Network Tooling
+### 3.5 Phase 4: Advanced Network Tooling
 
 >Target Objectives: Implement the packet analyzer, certificate manager, and network scanner. (3-4 months)
 
-### 4.1 Certificate Manager
+#### 3.5.1 Certificate Manager
 
 - Generate and manage SSL/TLS certificates
 - Learn `acme/autocert` for automatic certificate management, `certmagic`
 
-### 4.2 Packet Analyzer (as per need)
+#### 3.5.2 Packet Analyzer (as per need)
 
 - Perform deep packet inspection
 - Look into `gopacket` for packet processing, `pcap` for packet capture
 
-### 4.3 Network Scanner (as per need)
+#### 3.5.3 Network Scanner (as per need)
 
 - Implement ping sweeper for network discovery
 - Develop port scanning (SYN scan)
@@ -143,11 +154,11 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Enable CSV export of scan results
 - Consider common implementations like `masscan`, `zmap`
 
-## Phase 5: Optional Features
+### 3.6 Phase 5: Optional Features
 
 >Target Objectives: Implement the optional web dashboard feature. (1-2 months)
 
-### 5.1 Web Dashboard (Optional)
+#### 3.6.1 Web Dashboard (Optional)
 
 - Create visual representation of network metrics
 - Implement log viewer with live timestamp
@@ -157,7 +168,7 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Consider scratch implementation or use `goadmin` for dashboard creation, `gorilla/websocket` for real-time updates
 - Implement performance metrics and charts
 
-## 3. Project Relevance and Learning Outcomes
+## 4. Project Relevance and Learning Outcomes
 
 - Address real-world cybersecurity challenges, particularly in network threat detection and mitigation
 - Design and implement a comprehensive network security suite
@@ -168,7 +179,7 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Create a modular and extensible architecture for future enhancements
 - Deepen understanding of network protocols and security concepts
 
-## 4. Future Goal (Core WAF Engine)
+## 5. Future Goal (Core WAF Engine)
 
 > Target Objectives: Learn and develop detection engines
 
