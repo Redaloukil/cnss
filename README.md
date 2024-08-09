@@ -6,6 +6,7 @@
 ![Reverse Proxy](https://img.shields.io/badge/Reverse_Proxy-b4befe?style=flat&logo=nginx&logoColor=11111b)
 ![Go](https://img.shields.io/badge/Go-94e2d5?style=flat&logo=go&logoColor=11111b)
 ![Cybersecurity](https://img.shields.io/badge/Cybersecurity-fab387?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzExMTExYiIgZD0iTTEyIDFMMyA5VDIxIDE4LjVRMTUuNCAyMiAxMiAyMlQ2LjQgMjBRMy41IDE4LjUgMyAxN2wtMi0uNXYtN2wyLTEuNXYyLjdxMi4yNSA0LjQgNy41IDQuOHQxMC0zLjNWOXoiLz48L3N2Zz4=&logoColor=11111b)
+
 ![Docker](https://img.shields.io/badge/Docker-89dceb?style=flat&logo=docker&logoColor=11111b)
 ![IDS](https://img.shields.io/badge/IDS-a6e3a1?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzExMTExYiIgZD0iTTEyIDJMNCA3djEwbDggNSA4LTVWN2wtOC01ek0xMiA0LjdsNS4yIDMuM0wxMiAxMS43IDYuOCA4bDUuMi0zLjN6TTYgOS4ybDUgMy4xdjYuNGwtNS0zLjFWOS4yek0xMyAxOC43di02LjRsNS0zLjF2Ni40bC01IDMuMXoiLz48L3N2Zz4=&logoColor=11111b)
 ![IPS](https://img.shields.io/badge/IPS-cba6f7?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzExMTExYiIgZD0iTTEyIDJMNCA3djEwbDggNSA4LTVWN2wtOC01ek0xMiA0LjdsNS4yIDMuM0wxMiAxMS43IDYuOCA4bDUuMi0zLjN6TTYgOS4ybDUgMy4xdjYuNGwtNS0zLjFWOS4yek0xMyAxOC43di02LjRsNS0zLjF2Ni40bC01IDMuMXoiLz48L3N2Zz4=&logoColor=11111b)
@@ -41,7 +42,7 @@ Due to the complexity and technical learning curve, the project is split into 5 
 
 ## Phase 0: Foundational Components
 
-Target Objectives: Set up development environment
+>Target Objectives: Set up development environment
 
 - Use `Docker Compose` to set up a local isolated network
 - Hook 4 Docker containers: `server`, `client`, `attacker` & `waf-deploy`
@@ -52,7 +53,7 @@ Target Objectives: Set up development environment
 
 ## Phase 1: WAF Reverse Proxy
 
-Target Objectives: Implement the core reverse proxy functionality and request parsing. (2-3 months)
+>Target Objectives: Implement the core reverse proxy functionality and request parsing. (2-3 months)
 
 ### 3.1 HTTP Proxy (Reverse Proxy)
 
@@ -77,7 +78,7 @@ Target Objectives: Implement the core reverse proxy functionality and request pa
 
 ## Phase 2: Security Mechanisms
 
-Target Objectives: Implement the core security features, including rate limiting and IP reputation management. (2-3 months)
+>Target Objectives: Implement the core security features, including rate limiting and IP reputation management. (2-3 months)
 
 ### 2.1 Rate Limiter
 
@@ -103,7 +104,7 @@ Target Objectives: Implement the core security features, including rate limiting
 
 ## Phase 3: Testing and Monitoring
 
-Target Objectives: Implement the testing suite and monitoring/dashboard components. (2-3 months)
+>Target Objectives: Implement the testing suite and monitoring/dashboard components. (2-3 months)
 
 ### 4.1 Testing Suite
 
@@ -122,7 +123,7 @@ Target Objectives: Implement the testing suite and monitoring/dashboard componen
 
 ## Phase 4: Advanced Network Tooling
 
-Target Objectives: Implement the packet analyzer, certificate manager, and network scanner. (3-4 months)
+>Target Objectives: Implement the packet analyzer, certificate manager, and network scanner. (3-4 months)
 
 ### 3.1 Certificate Manager
 
@@ -145,7 +146,7 @@ Target Objectives: Implement the packet analyzer, certificate manager, and netwo
 
 ## Phase 5: Optional Features
 
-Target Objectives: Implement the optional web dashboard feature. (1-2 months)
+>Target Objectives: Implement the optional web dashboard feature. (1-2 months)
 
 ### 5.1 Web Dashboard (Optional)
 
@@ -170,7 +171,7 @@ Target Objectives: Implement the optional web dashboard feature. (1-2 months)
 
 ## 10. Future Goal (Core WAF Engine)
 
-Target Objectives: Learn and develop detection engines
+> Target Objectives: Learn and develop detection engines
 
 - SQL Injection detection engine
 - Cross-Site Scripting (XSS) detection engine
