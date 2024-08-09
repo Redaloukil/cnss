@@ -17,12 +17,12 @@
 
 > Project Proposal: 🌸Reverse Proxy Firewall & Network Suite 🌸
 
-## Table of Contents
+## 0. Table of Contents
 
 1. [Introduction](#1-introduction)
 2. [Project Objectives](#2-project-objectives)
-3. [Project Relevance and Learning Outcomes](#9-project-relevance-and-learning-outcomes)
-4. [Future Goal (Core WAF Engine)](#10-future-goal-core-waf-engine)
+3. [Project Relevance and Learning Outcomes](#3-project-relevance-and-learning-outcomes)
+4. [Future Goal (Core WAF Engine)](#4-future-goal-core-waf-engine)
 
 ## 1. Introduction
 
@@ -54,7 +54,7 @@ Due to the complexity and technical learning curve, the project is split into 5 
 
 >Target Objectives: Implement the core reverse proxy functionality and request parsing. (2-3 months)
 
-### 3.1 HTTP Proxy (Reverse Proxy)
+### 1.1 HTTP Proxy (Reverse Proxy)
 
 - Implement using Go's `net/http` package
 - Intercept incoming HTTP/HTTPS requests
@@ -62,14 +62,14 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Handle TLS/SSL using `crypto/tls` package
 - Use `gorilla/mux` for routing, `martini` for middleware
 
-### 3.2 Request Parser
+### 1.2 Request Parser
 
 - Parse HTTP headers, body, and URL parameters
 - Handle different content types (e.g., JSON, XML, form-data)
 - Decode encoded content (e.g., base64, URL encoding)
 - Work with Go libraries: `json`, `xml`, `url`, `mime/multipart`
 
-### 3.3 Logging and Alerting System
+### 1.3 Logging and Alerting System
 
 - Log all requests and their outcomes
 - Implement real-time threat alerting
@@ -105,14 +105,14 @@ Due to the complexity and technical learning curve, the project is split into 5 
 
 >Target Objectives: Implement the testing suite and monitoring/dashboard components. (2-3 months)
 
-### 4.1 Testing Suite
+### 3.1 Testing Suite
 
 - Implement traffic simulation for controlled testing
 - Create various attack scenario simulations
 - Develop stress testing tools (e.g., packet flooding)
 - Consider manual implementation or use `fortio` for load testing, `gobench` for benchmarking
 
-### 4.2 Logging and Alerting System
+### 3.2 Logging and Alerting System
 
 - Log all requests and their outcomes
 - Implement real-time event-based alerting
@@ -124,17 +124,17 @@ Due to the complexity and technical learning curve, the project is split into 5 
 
 >Target Objectives: Implement the packet analyzer, certificate manager, and network scanner. (3-4 months)
 
-### 3.1 Certificate Manager
+### 4.1 Certificate Manager
 
 - Generate and manage SSL/TLS certificates
 - Learn `acme/autocert` for automatic certificate management, `certmagic`
 
-### 3.2 Packet Analyzer (as per need)
+### 4.2 Packet Analyzer (as per need)
 
 - Perform deep packet inspection
 - Look into `gopacket` for packet processing, `pcap` for packet capture
 
-### 3.3 Network Scanner (as per need)
+### 4.3 Network Scanner (as per need)
 
 - Implement ping sweeper for network discovery
 - Develop port scanning (SYN scan)
@@ -157,7 +157,7 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Consider scratch implementation or use `goadmin` for dashboard creation, `gorilla/websocket` for real-time updates
 - Implement performance metrics and charts
 
-## 9. Project Relevance and Learning Outcomes
+## 3. Project Relevance and Learning Outcomes
 
 - Address real-world cybersecurity challenges, particularly in network threat detection and mitigation
 - Design and implement a comprehensive network security suite
@@ -168,7 +168,7 @@ Due to the complexity and technical learning curve, the project is split into 5 
 - Create a modular and extensible architecture for future enhancements
 - Deepen understanding of network protocols and security concepts
 
-## 10. Future Goal (Core WAF Engine)
+## 4. Future Goal (Core WAF Engine)
 
 > Target Objectives: Learn and develop detection engines
 
