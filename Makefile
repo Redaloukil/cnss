@@ -2,14 +2,15 @@ MAJOR := 1
 MINOR := 0
 PATCH := 0
 VERSION := ${MAJOR}.${MINOR}.${PATCH}
-NAME = main${VERSION}
+APPLICATION := main
+NAME = ${APPLICATION}-v${VERSION}
 
 ENV ?= linux
 ARCH := amd64
 SUPPORTED_OS := linux freebsd windows darwin
 
 BINARY_DIR := bin
-BUILD_NAME := $(NAME)_$(ENV)_$(ARCH)
+BUILD_NAME := $(NAME)-$(ENV)-$(ARCH)
 SOURCE_DIR := ./cmd/cnss/main.go 
 
 
@@ -44,17 +45,17 @@ build:
 
 build-all:
 	@printf "\033[1;32mBuilding for all OS: $(SUPPORTED_OS) $(ARCH) architecture\033[0m\n\n"
-	GOOS=linux GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)_linux_$(ARCH) $(SOURCE_DIR)
-	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)_linux_$(ARCH)\033[0m\n\n"
+	GOOS=linux GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)-linux-$(ARCH) $(SOURCE_DIR)
+	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)-linux-$(ARCH)\033[0m\n\n"
 
-	GOOS=freebsd GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)_freebsd_$(ARCH) $(SOURCE_DIR)
-	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)_freebsd_$(ARCH)\033[0m\n\n"
+	GOOS=freebsd GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)-freebsd-$(ARCH) $(SOURCE_DIR)
+	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)-freebsd-$(ARCH)\033[0m\n\n"
 
-	GOOS=windows GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)_windows_$(ARCH).exe $(SOURCE_DIR)
-	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)_windows_$(ARCH)\033[0m\n\n"
+	GOOS=windows GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)-windows-$(ARCH).exe $(SOURCE_DIR)
+	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)-windows-$(ARCH)\033[0m\n\n"
 
-	GOOS=darwin GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)_darwin_$(ARCH) $(SOURCE_DIR)
-	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)_darwin_$(ARCH)\033[0m\n\n" 
+	GOOS=darwin GOARCH=$(ARCH) go build -o ./$(BINARY_DIR)/$(NAME)-darwin-$(ARCH) $(SOURCE_DIR)
+	@printf "\033[1;32mBuild completed at $(BINARY_DIR)/$(NAME)-darwin-$(ARCH)\033[0m\n\n" 
 
 
 run: build
