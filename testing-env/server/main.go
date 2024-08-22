@@ -1,6 +1,8 @@
 package main
 
+// TODO: recive interface return struct
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
 	"math/rand"
@@ -76,14 +78,12 @@ func genePaymentStatus() payStatus {
 }
 
 func genPhoneNmber() string {
-	areaCode := rand.Intn(8) + 2 
+	areaCode := rand.Intn(8) + 2
 	centralOfficeCode := rand.Intn(8) + 2
 	stationCode := rand.Intn(10000)
 
 	return fmt.Sprintf("(%03d)%03d-%04d", areaCode*100+rand.Intn(100), centralOfficeCode*100+rand.Intn(100), stationCode)
 }
-
-
 
 var locations = []string{
 	"New York/Manhattan",
@@ -158,7 +158,6 @@ type transaction struct {
 	DateOfTransaction any
 	Location          string
 	Contact           string
-	Description       string
 }
 
 func response() transaction {
@@ -174,19 +173,23 @@ func response() transaction {
 		PayStatus:         genePaymentStatus(),
 		DateOfTransaction: genTime(),
 		Location:          genLocation(),
-		Contact:           genPhoneNmber()  ,
-		Description:       "Payment for services",
+		Contact:           genPhoneNmber(),
 	}
 }
 
-func sendResponse(limit int) {
+func jsonResponce(limit int) {
 
 	for i := 0; i < limit; i++ {
 		response := response()
-		fmt.Println(response)
+		data, err := json.Marshal(response)
+		if err != nil {
+			fmt.Println("Error marshaling JSON:", err)
+			continue
+		}
+		fmt.Println(string(data))
 	}
 }
 
 func main() {
-	sendResponse(17)
+	jsonResponce(17)
 }
