@@ -19,13 +19,13 @@ var lastNames = []string{
 	"Hernandez", "Wilson", "Anderson", "Taylor", "Thomas",
 }
 
-func generateRandomName() (string, string) {
+func genName() (string, string) {
 	firstName := firstNames[rand.Intn(len(firstNames))]
 	lastName := lastNames[rand.Intn(len(lastNames))]
 	return firstName, lastName
 }
 
-func GenerateRandomAmount() float64 {
+func genAmount() float64 {
 
 	minAmount := 50.0
 	maxAmount := 5000.0
@@ -46,7 +46,7 @@ const (
 	UPI          paymentMode = "UPI transaction"
 )
 
-func generateRandomPaymentMode() paymentMode {
+func genPaymentMode() paymentMode {
 	var paymentModes = []paymentMode{
 		CreditCard,
 		PayPal,
@@ -65,7 +65,7 @@ const (
 	Failed    payStatus = "Failed"
 )
 
-func generateRandomPaymentstatus() payStatus {
+func genePaymentStatus() payStatus {
 	var payStatus = []payStatus{
 		Pending,
 		Completed,
@@ -75,7 +75,7 @@ func generateRandomPaymentstatus() payStatus {
 	return getstatus
 }
 
-func GenerateRandomPhoneNumber() string {
+func genPhoneNmber() string {
 	areaCode := rand.Intn(8) + 2 
 	centralOfficeCode := rand.Intn(8) + 2
 	stationCode := rand.Intn(10000)
@@ -137,12 +137,12 @@ var locations = []string{
 	"Oslo/Grunerlokka",
 }
 
-func generateRandomLocation() string {
+func genLocation() string {
 	Location := locations[rand.Intn(len(locations))]
 	return Location
 }
 
-func getRandomTime() string {
+func genTime() string {
 	now := time.Now()
 	formatted := now.Format("03:04PM Mon 02, Jan")
 	return formatted
@@ -163,18 +163,18 @@ type transaction struct {
 
 func response() transaction {
 
-	firstName, lastName := generateRandomName()
+	firstName, lastName := genName()
 
 	return transaction{
 		UID:               uuid.NewString(),
 		FirstName:         firstName,
 		LastName:          lastName,
-		PayAmount:         GenerateRandomAmount(),
-		PaymentMode:       generateRandomPaymentMode(),
-		PayStatus:         generateRandomPaymentstatus(),
-		DateOfTransaction: getRandomTime(),
-		Location:          generateRandomLocation(),
-		Contact:           GenerateRandomPhoneNumber()  ,
+		PayAmount:         genAmount(),
+		PaymentMode:       genPaymentMode(),
+		PayStatus:         genePaymentStatus(),
+		DateOfTransaction: genTime(),
+		Location:          genLocation(),
+		Contact:           genPhoneNmber()  ,
 		Description:       "Payment for services",
 	}
 }
