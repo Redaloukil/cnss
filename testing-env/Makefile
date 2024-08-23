@@ -53,15 +53,26 @@ build:
 	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
 	
 
-	@printf "\033[1;32mBuilding ${APPLICATION_NAME} for os: $(ENV) $(ARCH) architecture\033[0m\n"
-	GOOS=$(ENV) GOARCH=$(ARCH) go build -o ${APPLICATION_BUILD} ${APPLICATION_SOURCE}
+build-server:
+
+# SIMULATOR_BUILD := ${BINARY_DIR}/simulator/${SIMULATOR_NAME}-${VERSION}-${ENV}-${ARCH}
+	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: linux $(ARCH) architecture\033[0m\n"
+	GOOS=linux GOARCH=$(ARCH) go build -o ${BINARY_DIR}/simulator/${SIMULATOR_NAME}-${VERSION}-linux-${ARCH} ${SIMULATOR_SOURCE}
+	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
+	
+
+	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: freebsd $(ARCH) architecture\033[0m\n"
+	GOOS=freebsd GOARCH=$(ARCH) go build -o ${BINARY_DIR}/simulator/${SIMULATOR_NAME}-${VERSION}-freebsd-${ARCH} ${APPLICATION_SOURCE}
 	@printf "\033[1;32mBuild completed at ${APPLICATION_BUILD}\033[0m\n\n"
 
 
-	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: $(ENV) $(ARCH) architecture\033[0m\n"
-	GOOS=$(ENV) GOARCH=$(ARCH) go build -o ${SERVER_BUILD} ${SERVER_SOURCE}
+	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: darwin $(ARCH) architecture\033[0m\n"
+	GOOS=darwin GOARCH=$(ARCH) go build -o ${BINARY_DIR}/simulator/${SIMULATOR_NAME}-${VERSION}-darwin-${ARCH} ${SERVER_SOURCE}
 	@printf "\033[1;32mBuild completed at ${SERVER_BUILD}\033[0m\n\n"
 
+	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: windows $(ARCH) architecture\033[0m\n"
+	GOOS=windows GOARCH=$(ARCH) go build -o ${BINARY_DIR}/simulator/${SIMULATOR_NAME}-${VERSION}-windows-${ARCH}.exe ${SERVER_SOURCE}
+	@printf "\033[1;32mBuild completed at ${SERVER_BUILD}\033[0m\n\n"
 
 run: build
 	@printf "\n🌸 \033[1;32mExecuting ${APPLICATION_BUILD}....\033[0m\n"

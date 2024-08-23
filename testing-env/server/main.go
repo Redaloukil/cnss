@@ -4,9 +4,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
 	"math/rand"
+	"net/http"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var firstNames = []string{
@@ -68,12 +70,13 @@ const (
 )
 
 func genePaymentStatus() payStatus {
-	var payStatus = []payStatus{
-		Pending,
-		Completed,
+	// weight probability 8:2:1
+	weightedPayStatus := []payStatus{
+		Completed, Completed, Completed, Completed, Completed, Completed, Completed, Completed,
+		Pending, Pending,
 		Failed,
 	}
-	getstatus := payStatus[rand.Intn(len(payStatus))]
+	getstatus := weightedPayStatus[rand.Intn(len(weightedPayStatus))]
 	return getstatus
 }
 
@@ -177,19 +180,63 @@ func response() transaction {
 	}
 }
 
-func jsonResponce(limit int) {
+func index(responseProssess http.ResponseWriter, responce *http.Request) {
 
-	for i := 0; i < limit; i++ {
-		response := response()
-		data, err := json.Marshal(response)
-		if err != nil {
-			fmt.Println("Error marshaling JSON:", err)
-			continue
+	message := `🌸🌸 Welcome to the dummy API! 🌸🌸
+
+*--------------------------------*
+| Available Endpoints:           |
+| - Check Headers : /headers     |
+| - Get Data      : /api/v1/data |
+*--------------------------------*
+
+🔑 When you request data from /api/v1/data, 
+you'll receive a JSON response in following format:
+
+{
+  "UID": "<unique identifier>",
+  "FirstName": "<user first name>",
+  "LastName": "<user last name>",
+  "PayAmount": "<user amount>",
+  "PaymentMode": "<user payment method>",
+  "PayStatus": "<user payment status>",
+  "DateOfTransaction": "<user date and time>",
+  "Location": "<user location>",
+  "Contact": "<user contact number>"
+}
+
+🐛 By design, the API will only output feminine names.
+`
+
+	fmt.Fprintf(responseProssess, message)
+
+}
+
+func headers(responseProssess http.ResponseWriter, responce *http.Request) {
+
+	for name, headers := range responce.Header {
+		for _, h := range headers {
+			fmt.Fprintf(responseProssess, "%v: %v\n", name, h)
 		}
-		fmt.Println(string(data))
+
 	}
 }
 
+func data(responseProssess http.ResponseWriter, responce *http.Request) {
+
+	response := response()
+	data, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+	}
+
+	responseProssess.Header().Set("Content-Type", "application/json")
+	responseProssess.Write(data)
+}
+
 func main() {
-	jsonResponce(17)
+	http.HandleFunc("/", index)
+	http.HandleFunc("/api/v1/data", data)
+	http.HandleFunc("/headers", headers)
+	http.ListenAndServe(":8090", nil)
 }
