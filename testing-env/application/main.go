@@ -31,9 +31,12 @@ func getData() (*map[string]interface{}, error) {
 }
 
 func index(responseProssess http.ResponseWriter, responce *http.Request) {
-	fmt.Fprint(responseProssess, "<h1>hi</h1>")
+	fmt.Fprint(responseProssess, "<h1>this is a sample web application</h1>")
 }
 
+func user(responseProssess http.ResponseWriter, responce *http.Request) {
+	fmt.Fprint(responseProssess, "user dash-board")
+}
 
 
 func data(responseProssess http.ResponseWriter, responce *http.Request) {
@@ -49,5 +52,6 @@ func data(responseProssess http.ResponseWriter, responce *http.Request) {
 func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/data", data)
+	http.HandleFunc("/user", data)
 	http.ListenAndServe(":8080", nil)
 }
