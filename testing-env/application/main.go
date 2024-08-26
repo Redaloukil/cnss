@@ -4,6 +4,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 )
 
@@ -49,9 +51,26 @@ func data(responseProssess http.ResponseWriter, responce *http.Request) {
 	fmt.Fprint(responseProssess, data)
 }
 
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("index.html"))
+	tmpl.Execute(w, nil)
+}
+
+func handleGreet(w http.ResponseWriter, r *http.Request) {
+	name := r.FormValue("name")
+	if name == "" {
+		name = "Admin"
+	}
+	w.Write([]byte("login as, " + name + "!"))
+}
+
+
 func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/data", data)
 	http.HandleFunc("/user", data)
-	http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/dashboard", handleIndex)
+	http.HandleFunc("/login", handleGreet)
+	log.Println("Server is running on http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
