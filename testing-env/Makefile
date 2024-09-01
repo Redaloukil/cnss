@@ -116,6 +116,10 @@ build-simulator:
 	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
 
 
+build-all: build-simulator build-application build-server:
+	@printf "\033[1;32mBuilding all component for all os $(ARCH) architecture\033[0m\n"
+
+
 run: build
 	@printf "\n🌸 \033[1;32mExecuting ${APPLICATION_BUILD}....\033[0m\n"
 	@./${APPLICATION_BUILD}
