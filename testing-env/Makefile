@@ -1,140 +1,129 @@
-MAJOR := 1
-MINOR := 0
-PATCH := 0
-VERSION := v${MAJOR}.${MINOR}.${PATCH}
+# NOTE :-
+# MAJOR => 1 for breking changes
+# MINOR => 0 for new feature
+# PATCH => 0 for bug patch/minor fix
 
-ENV ?= linux
 ARCH := amd64
-SUPPORTED_OS := linux freebsd windows darwin
-BINARY_DIR := ./bin
 
-APPLICATION_NAME := application
-APPLICATION_SOURCE := ./application/main.go
-APPLICATION_BUILD := ${BINARY_DIR}/application/${APPLICATION_NAME}-${VERSION}-${ENV}-${ARCH}
+APPLICATION_VERSION := 1.0.0
+SERVER_VERSION := 1.0.0
+SIMULATOR_VERSION := 1.0.0
+
+# colour 
+Red    := \033[1;31m
+Green  := \033[1;32m
+Yellow := \033[1;33m
+Blue   := \033[1;34m
+Purple := \033[1;35m
+Cyan   := \033[1;36m
+Clear  := \033[0m
+
+OS :=
+
+ifeq ($(OS),Windows_NT)
+	OS := windows
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OS := linux
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OS := darwin
+	endif
+	ifeq ($(UNAME_S),FreeBSD)
+		OS := FreeBSD
+	endif
+	# fllback
+	ifeq ($(OS),)
+		OS := linux
+	endif
+endif
 
 
-SERVER_NAME := server
-SERVER_SOURCE := ./server/main.go
-SERVER_BUILD := ${BINARY_DIR}/server/${SERVER_NAME}-${VERSION}-${ENV}-${ARCH}
-
-
-SIMULATOR_NAME := simulator
-SIMULATOR_SOURCE := ./simulator/main.go
-SIMULATOR_BUILD := ${BINARY_DIR}/simulator/${SIMULATOR_NAME}-${VERSION}-${ENV}-${ARCH}
-
-
-
-all:ensure default
+default: help
 
 ensure:
-	@mkdir -p ${BINARY_DIR}
-	@mkdir -p ${BINARY_DIR}/${APPLICATION_NAME}
-	@mkdir -p ${BINARY_DIR}/${SERVER_NAME}
-	@mkdir -p ${BINARY_DIR}/${SIMULATOR_SOURCE}
+	@mkdir -p ./bin
+	@mkdir -p ./bin/server/
+	@mkdir -p ./bin/application/
+	@mkdir -p ./bin/simulator/
+
+help:
+
+	@printf "$(Cyan)Usage: make [target]$(Clear)\n\n"
+	@printf "$(Blue)Targets:$(Clear)\n"
+	@printf "$(Purple)   help$(Clear)            - Display this help message\n"
+	@printf "$(Purple)   ensure$(Clear)          - Create necessary directories\n"
+	@printf "$(Purple)   build$(Clear)           - Build the Server, Application, and Simulator for the current OS and architecture\n"
+	@printf "$(Purple)   build-all$(Clear)       - Build the Server, Application, and Simulator for all supported OSes (linux, darwin, freebsd, windows)\n"
+	@printf "$(Purple)   detect-os$(Clear)       - Default OS detected for build target\n"
+	@printf "$(Purple)   run-server$(Clear)      - Run the Server for the current OS and architecture\n"
+	@printf "$(Purple)   run-application$(Clear) - Run the Application for the current OS and architecture\n"
+	@printf "$(Purple)   run-simulator$(Clear)   - Run the Simulator for the current OS and architecture\n"
+	@printf "$(Purple)   clean$(Clear)           - Remove all built binaries\n"
+
+	@printf "\n$(Red)Example:$(Clear)\n"
+	@printf "$(Yellow)>> make detected-os $(Clear)\n"
+	@$(MAKE) --no-print-directory detect-os 
 
 
-default:
-	@printf "\033[1;34mBUILD INSTRUCTION\033[0m\n\n"
+detect-os:
+	@printf "\n$(Green)Your Detected OS is $(OS)$(Clear)\n"
 
-	@printf "🌸 \033[1;32mTo build the testing environments:\033[0m\n"
-	@printf "   \033[1;35m>> make build ENV={your os linux, freebsd, windows, darwin}\033[0m\n"
-	@printf "   \033[1;36mExample:\033[0m on macOS\n   \033[1;35m>> make build ENV=darwin\033[0m\n\n"
 
-	@printf "🌸 \033[1;32mTo run the testing environments:\033[0m\n"
-	@printf "   \033[1;35m>> make run ENV={your os linux, freebsd, windows, darwin}\033[0m\n"
-	@printf "   \033[1;36mExample:\033[0m on macOS\n   \033[1;35m>> make run ENV=darwin\033[0m\n\n"
+build: ensure
 
-	@printf "🌸 \033[1;31mTo clean up the testing environments:\033[0m\n"
-	@printf "   \033[1;35m>> make clean\033[0m\n\n"
+	@printf "$(Purple) building Server for default OS $(OS) $(Clear)\n"
+	go build -o ./bin/server/server-v${SERVER_VERSION}-${OS}-${ARCH} ./server/main.go
+	@printf "$(Purple) building Application for default OS $(OS) $(Clear)\n"
+	go build -o ./bin/application/application-v${APPLICATION_VERSION}-${OS}-${ARCH} ./application/main.go
+	@printf "$(Purple) building Simmulator for default OS $(OS) $(Clear)\n"
+	go build -o ./bin/simulator/simulator-v${SIMULATOR_VERSION}-${OS}-${ARCH} ./simulator/main.go
 
-build:
-	@printf "\033[1;32mBuilding ${SIMULATOR_NAME} for os: $(ENV) $(ARCH) architecture\033[0m\n"
-	GOOS=$(ENV) GOARCH=$(ARCH) go build -o ${SIMULATOR_BUILD} ${SIMULATOR_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
+build-all: ensure
+
+	@printf "$(Purple) building Server, Application, & Simmulator for linux $(Clear)\n"
+	GOOS=linux GOARCH=$(ARCH) go build -o ./bin/server/server-v${SERVER_VERSION}-linux-${ARCH} ./server/main.go
+	GOOS=linux GOARCH=$(ARCH) go build -o ./bin/application/application-v${APPLICATION_VERSION}-linux-${ARCH} ./application/main.go
+	GOOS=linux GOARCH=$(ARCH) go build -o ./bin/simulator/simulator-v${SIMULATOR_VERSION}-linux-${ARCH} ./simulator/main.go
+
+	@printf "$(Purple) building Server, Application, & Simmulator for freebsd $(Clear)\n"
+	GOOS=freebsd GOARCH=$(ARCH) go build -o ./bin/server/server-v${SERVER_VERSION}-freebsd-${ARCH} ./server/main.go
+	GOOS=freebsd GOARCH=$(ARCH) go build -o ./bin/application/application-v${APPLICATION_VERSION}-freebsd-${ARCH} ./application/main.go
+	GOOS=freebsd GOARCH=$(ARCH) go build -o ./bin/simulator/simulator-v${SIMULATOR_VERSION}-freebsd-${ARCH} ./simulator/main.go
+
+	@printf "$(Purple) building Server, Application, & Simmulator for darwin $(Clear)\n"
+	GOOS=darwin GOARCH=$(ARCH) go build -o ./bin/server/server-v${SERVER_VERSION}-darwin-${ARCH} ./server/main.go
+	GOOS=darwin GOARCH=$(ARCH) go build -o ./bin/application/application-v${APPLICATION_VERSION}-darwin-${ARCH} ./application/main.go
+	GOOS=darwin GOARCH=$(ARCH) go build -o ./bin/simulator/simulator-v${SIMULATOR_VERSION}-darwin-${ARCH} ./simulator/main.go
+
+	@printf "$(Purple) building Server, Application, & Simmulator for windows $(Clear)\n"
+	GOOS=windows GOARCH=$(ARCH) go build -o ./bin/server/server-v${SERVER_VERSION}-windows-${ARCH} ./server/main.go
+	GOOS=windows GOARCH=$(ARCH) go build -o ./bin/application/application-v${APPLICATION_VERSION}-windows-${ARCH} ./application/main.go
+	GOOS=windows GOARCH=$(ARCH) go build -o ./bin/simulator/simulator-v${SIMULATOR_VERSION}-windows-${ARCH} ./simulator/main.go
 	
+run-server: 
+	@printf "$(Purple) running Server $(Clear)\n"
+	./bin/server/server-v1.0.0-${OS}-amd64
 
-build-server:
+run-application: 
+	@printf "$(Purple) running Application $(Clear)\n"
+	./bin/application/application-v1.0.0-${OS}-amd64
 
-	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: linux $(ARCH) architecture\033[0m\n"
-	GOOS=linux GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${server_NAME}-${VERSION}-linux-${ARCH} ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${server_BUILD}\033[0m\n\n"
-	
+run-simulator: 
+	@printf "$(Purple) running Simmulator $(Clear)\n"
+	./bin/simulator/simulator-v1.0.0-${OS}-amd64
 
-	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: freebsd $(ARCH) architecture\033[0m\n"
-	GOOS=freebsd GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${server_NAME}-${VERSION}-freebsd-${ARCH} ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
+# run-all: 
+# 	@$(MAKE) run-server &
+# 	@$(MAKE) run-application &
+# 	@$(MAKE) run-simulator &
+# 	wait
+# 	@printf "$(Purple) All services started $(Clear)\n"
 
+clean:
+	@printf "$(Red)" 
+	rm -ir ./bin/*/*
+	@printf "$(Green) binary cleaned from ./bin/ $(Clear)\n" 
 
-	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: darwin $(ARCH) architecture\033[0m\n"
-	GOOS=darwin GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${server_NAME}-${VERSION}-darwin-${ARCH} ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SERVER_BUILD}\033[0m\n\n"
-
-	@printf "\033[1;32mBuilding ${SERVER_NAME} for os: windows $(ARCH) architecture\033[0m\n"
-	GOOS=windows GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${server_NAME}-${VERSION}-windows-${ARCH}.exe ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SERVER_BUILD}\033[0m\n\n"
-
-
-build-application:
-
-	@printf "\033[1;32mBuilding ${APPLICATION_NAME} for os: linux $(ARCH) architecture\033[0m\n"
-	GOOS=linux GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${APPLICATION_NAME}-${VERSION}-linux-${ARCH} ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${APPLICATION_BUILD}\033[0m\n\n"
-	
-
-	@printf "\033[1;32mBuilding ${APPLICATION_NAME} for os: freebsd $(ARCH) architecture\033[0m\n"
-	GOOS=freebsd GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${APPLICATION_NAME}-${VERSION}-freebsd-${ARCH} ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${APPLICATION_BUILD}\033[0m\n\n"
-
-
-	@printf "\033[1;32mBuilding ${APPLICATION_NAME} for os: darwin $(ARCH) architecture\033[0m\n"
-	GOOS=darwin GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${APPLICATION_NAME}-${VERSION}-darwin-${ARCH} ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${APPLICATION_BUILD}\033[0m\n\n"
-
-	@printf "\033[1;32mBuilding ${APPLICATION_NAME} for os: windows $(ARCH) architecture\033[0m\n"
-	GOOS=windows GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${APPLICATION_NAME}-${VERSION}-windows-${ARCH}.exe ${SERVER_SOURCE}
-	@printf "\033[1;32mBuild completed at ${APPLICATION_BUILD}\033[0m\n\n"
-
-
-build-simulator:
-
-	@printf "\033[1;32mBuilding ${SIMULATOR_NAME} for os: linux $(ARCH) architecture\033[0m\n"
-	GOOS=linux GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${SIMULATOR_NAME}-${VERSION}-linux-${ARCH} ${SIMULATOR_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
-	
-
-	@printf "\033[1;32mBuilding ${SIMULATOR_NAME} for os: freebsd $(ARCH) architecture\033[0m\n"
-	GOOS=freebsd GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${SIMULATOR_NAME}-${VERSION}-freebsd-${ARCH} ${SIMULATOR_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
-
-
-	@printf "\033[1;32mBuilding ${SIMULATOR_NAME} for os: darwin $(ARCH) architecture\033[0m\n"
-	GOOS=darwin GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${SIMULATOR_NAME}-${VERSION}-darwin-${ARCH} ${SIMULATOR_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
-
-	@printf "\033[1;32mBuilding ${SIMULATOR_NAME} for os: windows $(ARCH) architecture\033[0m\n"
-	GOOS=windows GOARCH=$(ARCH) go build -o ${BINARY_DIR}/server/${SIMULATOR_NAME}-${VERSION}-windows-${ARCH}.exe ${SIMULATOR_SOURCE}
-	@printf "\033[1;32mBuild completed at ${SIMULATOR_BUILD}\033[0m\n\n"
-
-
-build-all: build-simulator build-application build-server:
-	@printf "\033[1;32mBuilding all component for all os $(ARCH) architecture\033[0m\n"
-
-
-run: build
-	@printf "\n🌸 \033[1;32mExecuting ${APPLICATION_BUILD}....\033[0m\n"
-	@./${APPLICATION_BUILD}
-
-	@printf "\n🌸 \033[1;32mExecuting ${SERVER_BUILD}....\033[0m\n"
-	@./${SERVER_BUILD}
-
-	@printf "\n🌸 \033[1;32mExecuting ${SIMULATOR_BUILD}....\033[0m\n"
-	@./${SIMULATOR_BUILD}
-
-
-clean: 
-	@printf "\033[1;31m" 
-	rm -ir ${BINARY_DIR}/*/*
-	@printf "\033[1;32mbinary cleaned from ${BINARY_DIR}/ \033[0m\n\n" 
-	
-
-.PHONY: ensure all default build run clean
+.PHONY: default ensure detect-os help build build-all run-server run-application run-simulator clean
