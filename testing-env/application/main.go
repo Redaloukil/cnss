@@ -36,6 +36,11 @@ func index(responseProssess http.ResponseWriter, responce *http.Request) {
 	fmt.Fprint(responseProssess, "<h1>this is a sample web application</h1>")
 }
 
+
+func signin(responseProssess http.ResponseWriter, responce *http.Request) {
+	fmt.Fprint(responseProssess, "new? click here to sign in <button> sign in</button>")
+}
+
 func user(responseProssess http.ResponseWriter, responce *http.Request) {
 	fmt.Fprint(responseProssess, "user dash-board")
 }
@@ -71,6 +76,7 @@ func main() {
 	http.HandleFunc("/user", data)
 	http.HandleFunc("/dashboard", handleIndex)
 	http.HandleFunc("/login", handleGreet)
+	http.HandleFunc("/signin", signin)
 	log.Println("Server is running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
