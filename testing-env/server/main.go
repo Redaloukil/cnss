@@ -4,6 +4,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -238,5 +239,6 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/api/v1/data", data)
 	http.HandleFunc("/headers", headers)
-	http.ListenAndServe(":8090", nil)
+	log.Println("Server is running on http://localhost:8090")
+	log.Fatal(http.ListenAndServe(":8090", nil))
 }
