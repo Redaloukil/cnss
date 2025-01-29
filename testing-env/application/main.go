@@ -1,37 +1,47 @@
 package main
 
 import (
-	"bufio"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 )
 
-func get_data(){
+func get_data() ([]byte) {
 
 	resp, err := http.Get("http://localhost:8090/api/v1/data")
 	if err != nil {
 		log.Println("\n\nserver is down", err)
-		return
+		return nil 
 	} 
 	defer resp.Body.Close()
 
 	fmt.Println("Response status:", resp.Status)
 
-	scanner := bufio.NewScanner(resp.Body)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("can't read Response Body:", err)
+		return nil
 	}
-
-	if err := scanner.Err(); err != nil {
-		log.Println("\n\ncan't read Response body", err)
-		return
-    }
-	
+	return body
 }
 
 
+func process_json_data(body []byte ) (map[string]interface{}){
+	var data map[string]interface{}
+	err := json.Unmarshal(body, &data)
+	if err != nil {
+		log.Println("can't process json data", err)
+		return nil 
+	}
+	return data
+}
+
 func main() {
 	fmt.Println("\n\nclient running..")
-	get_data()
+
+	data := process_json_data(get_data())
+	fmt.Println(data)
+
 }
