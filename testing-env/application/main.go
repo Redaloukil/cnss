@@ -87,10 +87,40 @@ func dashboard(w http.ResponseWriter, resp *http.Request){
 	)
 }
 
+func index(w http.ResponseWriter, resp *http.Request) {
+
+	message := `🌸🌸 Welcome to the dummy client 🌸🌸
+
+*--------------------------------*
+| Available Endpoints:           |
+| - index     : /                |
+| - Dashboard : /dashboard       |
+*--------------------------------*
+
+🔑 head to /dashboard that will make a json request
+   to server:port/api/v1/data response will be like this 
+
+
+{
+  "UID": "<unique identifier>",
+  "FirstName": "<user first name>",
+  "LastName": "<user last name>",
+  "PayAmount": "<user amount>",
+  "PaymentMode": "<user payment method>",
+  "PayStatus": "<user payment status>",
+  "DateOfTransaction": "<user date and time>",
+  "Location": "<user location>",
+  "Contact": "<user contact number>"
+}
+
+🐛 The data will be presented in a table on the dashboard.
+`
+
+	fmt.Fprintf(w, "%v", message)
+}
 
 func main() {
-	fmt.Println("\n\nclient running..")
-
+	http.HandleFunc("/", index)
 	http.HandleFunc("/dashboard", dashboard)
 	http.ListenAndServe(":8080", nil)
 }
