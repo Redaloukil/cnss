@@ -38,10 +38,17 @@ func process_json_data(body []byte ) (map[string]interface{}){
 	return data
 }
 
+func dashboard(w http.ResponseWriter, resp *http.Request){
+	fmt.Fprintf(w, "<h1>dashboard<h1>")
+}
+
+
 func main() {
 	fmt.Println("\n\nclient running..")
 
 	data := process_json_data(get_data())
 	fmt.Println(data)
 
+	http.HandleFunc("/dashboard", dashboard)
+	http.ListenAndServe(":8080", nil)
 }
