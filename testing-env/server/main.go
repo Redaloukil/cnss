@@ -239,6 +239,7 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/api/v1/data", data)
 	http.HandleFunc("/headers", headers)
-	log.Println("Server is running on http://localhost:8090")
+
+	log.Println("\n\nServer is running on http://localhost:8090")
 	log.Fatal(http.ListenAndServe(":8090", nil))
 }

@@ -120,5 +120,7 @@ func index(w http.ResponseWriter, resp *http.Request) {
 func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/dashboard", dashboard)
-	http.ListenAndServe(":8080", nil)
+
+	log.Println("\n\napplication is running on http://localhost:5000")
+	log.Fatal(http.ListenAndServe(":5000", nil))
 }
