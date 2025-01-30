@@ -8,13 +8,13 @@ import (
 	"net/http"
 )
 
-func get_data() ([]byte) {
+func get_data() []byte {
 
 	resp, err := http.Get("http://localhost:8090/api/v1/data")
 	if err != nil {
 		log.Println("\n\nserver is down", err)
-		return nil 
-	} 
+		return nil
+	}
 	defer resp.Body.Close()
 
 	fmt.Println("Response status:", resp.Status)
@@ -27,20 +27,18 @@ func get_data() ([]byte) {
 	return body
 }
 
-
-func process_json_data(body []byte ) (map[string]interface{}){
+func process_json_data(body []byte) map[string]interface{} {
 	var data map[string]interface{}
 	err := json.Unmarshal(body, &data)
 	if err != nil {
 		log.Println("can't process json data", err)
-		return nil 
+		return nil
 	}
 	return data
 }
 
-func dashboard(w http.ResponseWriter, resp *http.Request){
+func dashboard(w http.ResponseWriter, resp *http.Request) {
 	data := process_json_data(get_data())
-	fmt.Fprintf(w, "<h1>dashboard<h1></br>")
 	fmt.Fprintf(w, `
 		<html>
 		<head>
@@ -98,7 +96,7 @@ func index(w http.ResponseWriter, resp *http.Request) {
 *--------------------------------*
 
 🔑 head to /dashboard that will make a json request
-   to server:port/api/v1/data response will be like this 
+   to server:port/api/v1/data response will be like this
 
 
 {
