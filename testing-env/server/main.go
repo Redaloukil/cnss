@@ -181,7 +181,7 @@ func response() transaction {
 	}
 }
 
-func index(responseProssess http.ResponseWriter, responce *http.Request) {
+func index(w http.ResponseWriter, resp *http.Request) {
 
 	message := `🌸🌸 Welcome to the dummy API! 🌸🌸
 
@@ -206,24 +206,24 @@ you'll receive a JSON response in following format:
   "Contact": "<user contact number>"
 }
 
-🐛 By design, the API will only output feminine names.
+🐛 The API mimics data from a women's hospital, using feminine names.
 `
 
-	fmt.Fprintf(responseProssess, message)
+	fmt.Fprintf(w, "%v", message)
 
 }
 
-func headers(responseProssess http.ResponseWriter, responce *http.Request) {
+func headers(w http.ResponseWriter, resp *http.Request) {
 
-	for name, headers := range responce.Header {
+	for name, headers := range resp.Header {
 		for _, h := range headers {
-			fmt.Fprintf(responseProssess, "%v: %v\n", name, h)
+			fmt.Fprintf(w, "%v: %v\n", name, h)
 		}
 
 	}
 }
 
-func data(responseProssess http.ResponseWriter, responce *http.Request) {
+func data(w http.ResponseWriter, resp *http.Request) {
 
 	response := response()
 	data, err := json.Marshal(response)
@@ -231,8 +231,8 @@ func data(responseProssess http.ResponseWriter, responce *http.Request) {
 		fmt.Println("Error marshaling JSON:", err)
 	}
 
-	responseProssess.Header().Set("Content-Type", "application/json")
-	responseProssess.Write(data)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
 }
 
 func main() {
