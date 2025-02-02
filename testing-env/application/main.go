@@ -8,9 +8,11 @@ import (
 	"net/http"
 )
 
+var url string = "http://server:8090"
+
 func get_data() []byte {
 
-	resp, err := http.Get("http://localhost:8090/api/v1/data")
+	resp, err := http.Get(url + "/api/v1/data")
 	if err != nil {
 		log.Println("\n\nserver is down", err)
 		return nil
