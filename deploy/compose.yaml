@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+
+  application:
+    build:
+      context: ../testing-env/application/
+      dockerfile: Dockerfile
+    container_name: application
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+
+  server:
+    build:
+      context: ../testing-env/server
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
