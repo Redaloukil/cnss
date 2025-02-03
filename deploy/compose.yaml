@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
 
   application:
@@ -28,3 +26,4 @@ services:
 networks:
   lab-network:
     driver: bridge
+    name: lab-network
