@@ -1,6 +1,7 @@
 services:
 
   application:
+    image: application
     build:
       context: ../testing-env/application/
       dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
 
 
   server:
+    image: server
     build:
       context: ../testing-env/server
       dockerfile: Dockerfile
