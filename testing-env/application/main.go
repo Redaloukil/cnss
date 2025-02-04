@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-var url string = "http://server:8090"
+var url string = "http://172.16.0.3:8090"
 
 func get_data() []byte {
 

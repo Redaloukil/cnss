@@ -10,7 +10,8 @@ services:
       - "5000:5000"
     restart: unless-stopped
     networks:
-    - lab-network
+      lab-network:
+        ipv4_address: 172.16.0.2
 
 
   server:
@@ -23,9 +24,13 @@ services:
       - "8090:8090"
     restart: unless-stopped
     networks:
-    - lab-network
+      lab-network:
+        ipv4_address: 172.16.0.3
 
 networks:
   lab-network:
     driver: bridge
     name: lab-network
+    ipam:
+      config:
+       - subnet: 172.16.0.0/29
