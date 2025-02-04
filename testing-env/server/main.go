@@ -185,14 +185,14 @@ func index(w http.ResponseWriter, resp *http.Request) {
 
 	message := `🌸🌸 Welcome to the dummy API! 🌸🌸
 
-*--------------------------------*
-| Available Endpoints:           |
-| - Check Headers : /headers     |
-| - Get Data      : /api/v1/data |
-*--------------------------------*
+*-----------------------------------*
+| Available Endpoints:              |
+| - Check Headers    : /headers     |
+| - Get single entry : /api/v1/data |
+*-----------------------------------*
 
 🔑 When you request data from /api/v1/data, 
-you'll receive a JSON response in following format:
+you'll receive a single JSON response in following format:
 
 {
   "UID": "<unique identifier>",
@@ -223,7 +223,7 @@ func headers(w http.ResponseWriter, resp *http.Request) {
 	}
 }
 
-func data(w http.ResponseWriter, resp *http.Request) {
+func getData(w http.ResponseWriter, resp *http.Request) {
 
 	response := response()
 	data, err := json.Marshal(response)
@@ -237,7 +237,7 @@ func data(w http.ResponseWriter, resp *http.Request) {
 
 func main() {
 	http.HandleFunc("/", index)
-	http.HandleFunc("/api/v1/data", data)
+	http.HandleFunc("/api/v1/data", getData)
 	http.HandleFunc("/headers", headers)
 
 	log.Println("\n\nServer is running on http://localhost:8090")
