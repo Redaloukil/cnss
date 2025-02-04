@@ -7,6 +7,8 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -185,11 +187,12 @@ func index(w http.ResponseWriter, resp *http.Request) {
 
 	message := `🌸🌸 Welcome to the dummy API! 🌸🌸
 
-*-----------------------------------*
-| Available Endpoints:              |
-| - Check Headers    : /headers     |
-| - Get single entry : /api/v1/data |
-*-----------------------------------*
+*---------------------------------------------------*
+| Available Endpoints  :                            |
+| - Check Headers      : /headers                   |
+| - Get single entry   : /api/v1/data               |
+| - Get multiple entry : /api/v1/data/<entry-count> |
+*---------------------------------------------------*
 
 🔑 When you request data from /api/v1/data, 
 you'll receive a single JSON response in following format:
@@ -235,9 +238,44 @@ func getData(w http.ResponseWriter, resp *http.Request) {
 	w.Write(data)
 }
 
+func getBatchData(w http.ResponseWriter, resp *http.Request) {
+
+	totalEntry := func() int {
+
+		defaultEntry  := 1
+		entryParam := strings.TrimPrefix(resp.URL.Path, "/api/v1/data/")
+
+		if entryParam == "" {
+			return defaultEntry
+		}
+
+		entry, err := strconv.Atoi(entryParam)
+		if err != nil {
+			return defaultEntry
+		}
+
+		return entry
+	}
+
+	batchData := map[string]transaction{}
+
+	for i := 1; i < totalEntry()+1; i++ {
+		batchData["entry-"+strconv.Itoa(i)] = response()
+	}
+
+	data, err := json.Marshal(batchData)
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}
+
 func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/api/v1/data", getData)
+	http.HandleFunc("/api/v1/data/", getBatchData)
 	http.HandleFunc("/headers", headers)
 
 	log.Println("\n\nServer is running on http://localhost:8090")
