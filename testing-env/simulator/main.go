@@ -46,6 +46,41 @@ func dashboard()  {
 	fmt.Println("*------------------------------")
 }
 
+func index(w http.ResponseWriter, resp *http.Request) {
+
+	message := `🌸🌸 Welcome to the simulator  🌸🌸
+
+*--------------------------------*
+| Available Endpoints:           |
+| - index     : /                |
+*--------------------------------*
+
+🔑 head to /dashboard that will fetch 
+	the responces 
+
+{
+  "UID": "<unique identifier>",
+  "FirstName": "<user first name>",
+  "LastName": "<user last name>",
+  "PayAmount": "<user amount>",
+  "PaymentMode": "<user payment method>",
+  "PayStatus": "<user payment status>",
+  "DateOfTransaction": "<user date and time>",
+  "Location": "<user location>",
+  "Contact": "<user contact number>"
+}
+
+🐛 The data will be fetched from the server using go routines
+`
+
+	fmt.Fprintf(w, "%v", message)
+}
+
 func main(){
 	dashboard()
+
+	http.HandleFunc("/", index)
+	
+	log.Println("\n\nsimulator is running on http://localhost:5001")
+	log.Fatal(http.ListenAndServe(":5001", nil))
 }
