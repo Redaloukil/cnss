@@ -36,7 +36,7 @@ func get_data() map[string]interface{} {
 	return data
 }
 
-func main(){
+func dashboard()  {
 	data := get_data()
 
 	fmt.Println("\n*---------entry-----------")
@@ -44,4 +44,8 @@ func main(){
 		fmt.Println("|",key, ":", value)
 	}
 	fmt.Println("*------------------------------")
+}
+
+func main(){
+	dashboard()
 }
