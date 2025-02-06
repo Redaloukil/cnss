@@ -27,6 +27,20 @@ services:
       lab-network:
         ipv4_address: 172.16.0.3
 
+
+  simulator:
+    image: simulator
+    build:
+      context: ../testing-env/simulator/
+      dockerfile: Dockerfile
+    container_name: simulator
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+    networks:
+      lab-network:
+        ipv4_address: 172.16.0.4
+
 networks:
   lab-network:
     driver: bridge
