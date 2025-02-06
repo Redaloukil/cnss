@@ -36,14 +36,14 @@ func get_data() map[string]interface{} {
 	return data
 }
 
-func dashboard()  {
+func dashboard(w http.ResponseWriter, resp *http.Request)  {
 	data := get_data()
 
-	fmt.Println("\n*---------entry-----------")
+	fmt.Fprintf(w, "%v", "\n*---------entry-----------")
 	for key, value := range data{
-		fmt.Println("|",key, ":", value)
+		fmt.Fprintf(w, "\n| %v : %v", key, value)
 	}
-	fmt.Println("*------------------------------")
+	fmt.Fprintf(w, "%v", "\n*------------------------------")
 }
 
 func index(w http.ResponseWriter, resp *http.Request) {
@@ -53,6 +53,7 @@ func index(w http.ResponseWriter, resp *http.Request) {
 *--------------------------------*
 | Available Endpoints:           |
 | - index     : /                |
+| - Dashboard : /dashboard       |
 *--------------------------------*
 
 🔑 head to /dashboard that will fetch 
@@ -77,9 +78,9 @@ func index(w http.ResponseWriter, resp *http.Request) {
 }
 
 func main(){
-	dashboard()
 
 	http.HandleFunc("/", index)
+	http.HandleFunc("/dashboard", dashboard)
 	
 	log.Println("\n\nsimulator is running on http://localhost:5001")
 	log.Fatal(http.ListenAndServe(":5001", nil))
