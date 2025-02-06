@@ -120,17 +120,8 @@ func index(w http.ResponseWriter, resp *http.Request) {
 }
 
 
-func ping(w http.ResponseWriter, resp *http.Request) {
-
-	message := `<h1>checking status 0k!</h1>`
-
-	fmt.Fprintf(w, "%v", message)
-}
-
-
 func main() {
 	http.HandleFunc("/", index)
-	http.HandleFunc("/ping", ping)
 	http.HandleFunc("/dashboard", dashboard)
 
 	log.Println("\n\napplication is running on http://localhost:5000")
