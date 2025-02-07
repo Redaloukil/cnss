@@ -6,9 +6,25 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 var url string = "http://172.16.0.3:8090"
+
+func GetApplicationAddress() string {
+	host := os.Getenv("APPLICATION_HOST_IP")
+	port := os.Getenv("APPLICATION_PORT")
+
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	if port == "" {
+		port = "5000"
+	}
+
+	return fmt.Sprintf("%s:%s", host, port)
+}
+
 
 func get_data() []byte {
 
@@ -124,6 +140,7 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/dashboard", dashboard)
 
-	log.Println("\n\napplication is running on http://localhost:5000")
-	log.Fatal(http.ListenAndServe(":5000", nil))
+  address := GetApplicationAddress()
+	log.Println("\n\napplication is running on http://"+address)
+	log.Fatal(http.ListenAndServe(address, nil))
 }

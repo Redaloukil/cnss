@@ -6,8 +6,11 @@ services:
       context: ../testing-env/application/
       dockerfile: Dockerfile
     container_name: application
+    environment:
+      APPLICATION_HOST_IP: "${APPLICATION_HOST_IP}"
+      APPLICATION_PORT: "${APPLICATION_PORT}"
     ports:
-      - "5000:5000"
+      - "${APPLICATION_PORT}:${APPLICATION_PORT}"
     restart: unless-stopped
     networks:
       lab-network:
