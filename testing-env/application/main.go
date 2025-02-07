@@ -9,7 +9,20 @@ import (
 	"os"
 )
 
-var url string = "http://172.16.0.3:8090"
+
+func GetServerAddress()  string{
+	host := os.Getenv("SERVER_HOST_IP")
+	port := os.Getenv("SERVER_PORT")
+
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	if port == "" {
+		port = "8080"
+	}
+
+	return fmt.Sprintf("%s:%s", host, port)
+}
 
 func GetApplicationAddress() string {
 	host := os.Getenv("APPLICATION_HOST_IP")
@@ -28,7 +41,7 @@ func GetApplicationAddress() string {
 
 func get_data() []byte {
 
-	resp, err := http.Get(url + "/api/v1/data")
+	resp, err := http.Get("http://" + GetServerAddress() + "/api/v1/data")
 	if err != nil {
 		log.Println("\n\nserver is down", err)
 		return nil

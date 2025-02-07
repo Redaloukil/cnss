@@ -9,6 +9,8 @@ services:
     environment:
       APPLICATION_HOST_IP: "${APPLICATION_HOST_IP}"
       APPLICATION_PORT: "${APPLICATION_PORT}"
+      SERVER_HOST_IP: "${SERVER_HOST_IP}"
+      SERVER_PORT: "${SERVER_PORT}"
     ports:
       - "${APPLICATION_PORT}:${APPLICATION_PORT}"
     restart: unless-stopped
@@ -25,8 +27,9 @@ services:
     container_name: server
     environment:
       SERVER_HOST_IP: "${SERVER_HOST_IP}"
+      SERVER_PORT: "${SERVER_PORT}"
     ports:
-      - "8090:8090"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     restart: unless-stopped
     networks:
       lab-network:
@@ -42,6 +45,8 @@ services:
     environment:
       SIMULATOR_HOST_IP: "${SIMULATOR_HOST_IP}"
       SIMULATOR_PORT: "${SIMULATOR_PORT}"
+      SERVER_HOST_IP: "${SERVER_HOST_IP}"
+      SERVER_PORT: "${SERVER_PORT}"
     ports:
       - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
     restart: unless-stopped

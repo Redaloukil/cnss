@@ -24,7 +24,7 @@ func GetServerAddress() string {
 		host = "127.0.0.1"
 	}
 	if port == "" {
-		port = "8090"
+		port = "8080"
 	}
 
 	return fmt.Sprintf("%s:%s", host, port)
