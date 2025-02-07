@@ -41,6 +41,18 @@ services:
       lab-network:
         ipv4_address: 172.16.0.4
 
+
+  netutils:
+    image: netutils
+    build:
+      context: ./netutils
+      dockerfile: Dockerfile
+    container_name: netutils
+    restart: unless-stopped
+    networks:
+      lab-network:
+        ipv4_address: 172.16.0.5
+
 networks:
   lab-network:
     driver: bridge
