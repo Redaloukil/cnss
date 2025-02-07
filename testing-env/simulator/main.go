@@ -6,9 +6,24 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 var url string = "http://172.16.0.3:8090"
+
+func GetSimulatorAddress() string {
+	host := os.Getenv("SIMULATOR_HOST_IP")
+	port := os.Getenv("SIMULATOR_PORT")
+
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	if port == "" {
+		port = "7000"
+	}
+
+	return fmt.Sprintf("%s:%s", host, port)
+}
 
 func get_data() map[string]interface{} {
 
@@ -82,6 +97,7 @@ func main(){
 	http.HandleFunc("/", index)
 	http.HandleFunc("/dashboard", dashboard)
 	
-	log.Println("\n\nsimulator is running on http://localhost:5001")
-	log.Fatal(http.ListenAndServe(":5001", nil))
+	address := GetSimulatorAddress()
+	log.Println("\n\nsimulator is running on http://"+address)
+	log.Fatal(http.ListenAndServe(address, nil))
 }

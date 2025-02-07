@@ -37,8 +37,11 @@ services:
       context: ../testing-env/simulator/
       dockerfile: Dockerfile
     container_name: simulator
+    environment:
+      SIMULATOR_HOST_IP: "${SIMULATOR_HOST_IP}"
+      SIMULATOR_PORT: "${SIMULATOR_PORT}"
     ports:
-      - "5001:5001"
+      - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
     restart: unless-stopped
     networks:
       lab-network:
