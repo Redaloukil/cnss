@@ -10,9 +10,26 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"os"
 
 	"github.com/google/uuid"
 )
+
+
+func GetServerAddress() string {
+	host := os.Getenv("SERVER_HOST_IP")
+	port := os.Getenv("SERVER_PORT")
+
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	if port == "" {
+		port = "8090"
+	}
+
+	return fmt.Sprintf("%s:%s", host, port)
+}
+
 
 var firstNames = []string{
 	"Emma", "Olivia", "Ava", "Isabella", "Sophia",
@@ -278,6 +295,7 @@ func main() {
 	http.HandleFunc("/api/v1/data/", getBatchData)
 	http.HandleFunc("/headers", headers)
 
-	log.Println("\n\nServer is running on http://localhost:8090")
-	log.Fatal(http.ListenAndServe(":8090", nil))
+	address := GetServerAddress()
+	log.Println("\n\nServer is running on http://"+address)
+	log.Fatal(http.ListenAndServe(address, nil))
 }

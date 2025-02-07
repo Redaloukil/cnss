@@ -23,6 +23,8 @@ services:
       context: ../testing-env/server
       dockerfile: Dockerfile
     container_name: server
+    environment:
+      SERVER_HOST_IP: "${SERVER_HOST_IP}"
     ports:
       - "8090:8090"
     restart: unless-stopped
