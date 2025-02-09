@@ -7,14 +7,13 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
-	"os"
 
 	"github.com/google/uuid"
 )
-
 
 func GetServerAddress() string {
 	host := os.Getenv("SERVER_HOST_IP")
@@ -29,7 +28,6 @@ func GetServerAddress() string {
 
 	return fmt.Sprintf("%s:%s", host, port)
 }
-
 
 var firstNames = []string{
 	"Emma", "Olivia", "Ava", "Isabella", "Sophia",
@@ -259,7 +257,7 @@ func getBatchData(w http.ResponseWriter, resp *http.Request) {
 
 	totalEntry := func() int {
 
-		defaultEntry  := 1
+		defaultEntry := 1
 		entryParam := strings.TrimPrefix(resp.URL.Path, "/api/v1/data/")
 
 		if entryParam == "" {
@@ -267,20 +265,29 @@ func getBatchData(w http.ResponseWriter, resp *http.Request) {
 		}
 
 		entry, err := strconv.Atoi(entryParam)
+
 		if err != nil {
 			return defaultEntry
 		}
 
 		return entry
+	}()
+
+	var responseBody interface{}
+
+	if totalEntry == 1 {
+		responseBody = response()
+
+	} else {
+		batchData := map[string]transaction{}
+		for i := 1; i < totalEntry+1; i++ {
+			batchData["entry-"+strconv.Itoa(i)] = response()
+		}
+		responseBody = batchData
 	}
 
-	batchData := map[string]transaction{}
+	data, err := json.Marshal(responseBody)
 
-	for i := 1; i < totalEntry()+1; i++ {
-		batchData["entry-"+strconv.Itoa(i)] = response()
-	}
-
-	data, err := json.Marshal(batchData)
 	if err != nil {
 		fmt.Println("Error marshaling JSON:", err)
 	}
@@ -296,6 +303,6 @@ func main() {
 	http.HandleFunc("/headers", headers)
 
 	address := GetServerAddress()
-	log.Println("\n\nServer is running on http://"+address)
+	log.Println("\n\nServer is running on http://" + address)
 	log.Fatal(http.ListenAndServe(address, nil))
 }
